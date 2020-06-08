@@ -1,35 +1,41 @@
 package ladder.step4.domain;
 
-import ladder.step4.domain.strategy.LadderLineStrategy;
+import ladder.step4.domain.strategy.DirectionStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-
 public class LadderLine {
-    private final List<Boolean> lines;
+    private final List<LadderPoint> lines;
 
-    private LadderLine(List<Boolean> lines) {
+    private LadderLine(List<LadderPoint> lines) {
         this.lines = lines;
     }
 
-    public static LadderLine of(int countOfPerson, LadderLineStrategy strategy) {
-        final boolean[] prev = {false};
-        return IntStream.range(0, countOfPerson)
-                        .mapToObj(v -> {
-                            prev[0] = strategy.createLine(prev[0]);
-                            return prev[0];
-                        }).collect(collectingAndThen(toList(), LadderLine::new));
+    public static LadderLine of(int countOfPerson, DirectionStrategy strategy) {
+        final List<LadderPoint> ladderLine = new ArrayList<>();
+        init(ladderLine, countOfPerson, strategy);
+        return new LadderLine(ladderLine);
     }
 
-    public Stream<Boolean> stream() {
+    static private void init (List<LadderPoint> lines, int countOfPerson, DirectionStrategy strategy) {
+        Direction prev = Direction.EMPTY;
+        int i = 0;
+        for (; i < countOfPerson - 1; i++) {
+            Direction direction = strategy.createBody(prev);
+            lines.add(LadderPoint.of(i, direction));
+            prev = direction;
+        }
+        Direction tailDirection = strategy.createTail(prev);
+        lines.add(LadderPoint.of(i, tailDirection));
+    }
+
+    public Stream<LadderPoint> stream() {
         return lines.stream();
     }
 
-    public boolean get (int index) {
-      return lines.get(index);
+    public int move (int index) {
+        return Math.max(lines.get(index).move(), 0);
     }
 }

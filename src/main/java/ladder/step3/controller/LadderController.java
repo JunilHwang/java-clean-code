@@ -1,9 +1,8 @@
-package ladder.step4.Controller;
+package ladder.step3.controller;
 
-import ladder.step4.domain.*;
-import ladder.step4.domain.strategy.LadderLineStrategyImpl;
-import ladder.step4.view.InputView;
-import ladder.step4.view.ResultView;
+import ladder.step3.domain.*;
+import ladder.step3.domain.strategy.*;
+import ladder.step3.view.*;
 
 public class LadderController {
     private static final InputView INPUT_VIEW = InputView.getInstance();

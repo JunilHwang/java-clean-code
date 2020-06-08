@@ -1,7 +1,6 @@
 package ladder.step4.domain;
 
-import ladder.step4.exception.LadderHeightMinimumSizeException;
-import ladder.step4.exception.LadderHeightNonNumberException;
+import ladder.step4.exception.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Map;
 public class LadderHeight {
 
     private static final Map<Integer, LadderHeight> FACTORY = new HashMap<>();
+    private static final int MIN_HEIGHT = 1;
 
     private final int value;
 
@@ -27,15 +27,10 @@ public class LadderHeight {
 
     public static LadderHeight valueOf(int height) {
         validateHeight(height);
-        LadderHeight ladderHeight = FACTORY.get(height);
-        if (ladderHeight == null) {
-            ladderHeight = new LadderHeight(height);
-            FACTORY.put(height, ladderHeight);
-        }
-        return ladderHeight;
+        return FACTORY.computeIfAbsent(height, LadderHeight::new);
     }
 
-    public static void validateThatItsNumber(String value) {
+    private static void validateThatItsNumber(String value) {
         try {
             Integer.parseInt(value);
         } catch (Exception e) {
@@ -43,8 +38,8 @@ public class LadderHeight {
         }
     }
 
-    public static void validateHeight(int height) {
-        if (height < 1) {
+    private static void validateHeight(int height) {
+        if (height < MIN_HEIGHT) {
             throw new LadderHeightMinimumSizeException();
         }
     }

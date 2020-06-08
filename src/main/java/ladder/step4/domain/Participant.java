@@ -1,7 +1,7 @@
 package ladder.step4.domain;
 
-import ladder.step4.exception.ParticipantNameMaximumSizeException;
 import ladder.step4.exception.ParticipantNameEmptyException;
+import ladder.step4.exception.ParticipantNameMaximumSizeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +18,7 @@ public class Participant {
     public static Participant valueOf(String value) {
         validateEmpty(value);
         validateLength(value);
-        if (FACTORY.get(value) == null) {
-            FACTORY.put(value, new Participant(value));
-        }
-        return FACTORY.get(value);
+        return FACTORY.computeIfAbsent(value, Participant::new);
     }
 
     public static void validateEmpty(String value) {

@@ -1,6 +1,6 @@
 package ladder.step4.domain;
 
-import ladder.step4.domain.strategy.LadderLineStrategy;
+import ladder.step4.domain.strategy.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,7 +25,7 @@ public class LadderTest {
 
     private static Stream<Arguments> provideLadderAndHeight() {
         Participants participants = Participants.of("a,b,c,d,e");
-        LadderLineStrategy strategy = prev -> true;
+        DirectionStrategy strategy = RightDirectionStrategy.getInstance();
         return Stream.of(
             Arguments.of(Ladder.of(participants, LadderHeight.valueOf(5), strategy), 5),
             Arguments.of(Ladder.of(participants, LadderHeight.valueOf(4), strategy), 4),
@@ -38,12 +38,13 @@ public class LadderTest {
     @DisplayName("사다리가 규칙에 맞게 잘 정상적으로 잘 생성 되는지 테스트")
     @ParameterizedTest
     @MethodSource("provideLadder")
-    void 사다리_생성_테스트(Ladder ladder, List<List<Boolean>> shape) {
-        assertThat(
-            ladder.stream()
-                  .map(ladderLine -> ladderLine.stream()
-                                               .collect(toList()))
-                  .collect(toList())).isEqualTo(shape);
+    void 사다리_생성_테스트(Ladder ladder, List<List<Direction>> shape) {
+        assertThat(ladder.stream()
+                         .map(ladderLine -> ladderLine.stream()
+                                                      .map(LadderPoint::getDirection)
+                                                      .collect(toList())
+                         ).collect(toList()))
+            .isEqualTo(shape);
     }
 
     private static Stream<Arguments> provideLadder() {
@@ -51,27 +52,35 @@ public class LadderTest {
         LadderHeight ladderHeight = LadderHeight.valueOf(3);
         return Stream.of(
             Arguments.of(
-                Ladder.of(participants, ladderHeight, prev -> !prev),
+                Ladder.of(participants, ladderHeight, ToggleDirectionStrategy.getInstance()),
                 Arrays.asList(
-                    Arrays.asList(true, false, true),
-                    Arrays.asList(true, false, true),
-                    Arrays.asList(true, false, true)
+                    Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.RIGHT, Direction.LEFT),
+                    Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.RIGHT, Direction.LEFT),
+                    Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.RIGHT, Direction.LEFT)
                 )
             ),
             Arguments.of(
-                Ladder.of(participants, ladderHeight, prev -> true),
+                Ladder.of(participants, ladderHeight, RightDirectionStrategy.getInstance()),
                 Arrays.asList(
-                    Arrays.asList(true, true, true),
-                    Arrays.asList(true, true, true),
-                    Arrays.asList(true, true, true)
+                    Arrays.asList(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+                    Arrays.asList(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT),
+                    Arrays.asList(Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT)
                 )
             ),
             Arguments.of(
-                Ladder.of(participants, ladderHeight, prev -> false),
+                Ladder.of(participants, ladderHeight, LeftDirectionStrategy.getInstance()),
                 Arrays.asList(
-                    Arrays.asList(false, false, false),
-                    Arrays.asList(false, false, false),
-                    Arrays.asList(false, false, false)
+                    Arrays.asList(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+                    Arrays.asList(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT),
+                    Arrays.asList(Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT)
+                )
+            ),
+            Arguments.of(
+                Ladder.of(participants, ladderHeight, EmptyDirectionStrategy.getInstance()),
+                Arrays.asList(
+                    Arrays.asList(Direction.EMPTY, Direction.EMPTY, Direction.EMPTY, Direction.EMPTY),
+                    Arrays.asList(Direction.EMPTY, Direction.EMPTY, Direction.EMPTY, Direction.EMPTY),
+                    Arrays.asList(Direction.EMPTY, Direction.EMPTY, Direction.EMPTY, Direction.EMPTY)
                 )
             )
         );

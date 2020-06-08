@@ -2,7 +2,6 @@ package ladder.step4.domain;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 public class LadderGameExecutor {
 
@@ -25,23 +24,20 @@ public class LadderGameExecutor {
         LadderResults ladderResults
     ) {
         Map<Participant, LadderResult> resultMap = new HashMap<>();
-        int width = participants.size() - 1;
-        for (int index = 0; index <= width; index++) {
+        int width = participants.size();
+        for (int index = 0; index < width; index++) {
             resultMap.put(
                 participants.get(index),
-                ladderResults.get(getResultIndex(index, width))
+                ladderResults.get(getResultIndex(index))
             );
         }
         return resultMap;
     }
 
-    private int getResultIndex (int index, int width) {
-        BiFunction<Integer, LadderLine, Integer> getNextIndex = (x, ladderLine) -> {
-             if (x > 0 && ladderLine.get(x - 1)) return x - 1;
-             if (x < width && ladderLine.get(x)) return x + 1;
-             return x;
-        };
+    private int getResultIndex (int index) {
         return ladder.stream()
-                     .reduce(index, getNextIndex, (x, ladderLine) -> x);
+                     .reduce(index,
+                         (x, ladderLine) -> ladderLine.move(x),
+                         (x, ladderLine) -> x);
     }
 }

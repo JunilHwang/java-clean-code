@@ -44,8 +44,10 @@ public class ResultView {
     }
 
     private String toStringOfLadderLine(LadderLine ladderLine) {
+        long limit = ladderLine.stream().count() - 1;
         return NO_LINE + ladderLine.stream()
-                                   .map(v -> v ? IS_LINE : NO_LINE)
+                                   .map(v -> v.isRight() ? IS_LINE : NO_LINE)
+                                   .limit(limit)
                                    .collect(joining(""));
     }
 
@@ -54,7 +56,7 @@ public class ResultView {
         System.out.println(NEW_LINE + "실행결과");
         System.out.println(
           isAll ? viewAllResult(ladderGame, participants)
-                : ladderGame.getResult(target).getValue()
+                : ladderGame.getResultOfString(target).getValue()
         );
     }
 

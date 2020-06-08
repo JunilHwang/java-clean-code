@@ -1,5 +1,7 @@
 package ladder.step4.domain;
 
+import ladder.step4.domain.strategy.DirectionStrategy;
+import ladder.step4.domain.strategy.ToggleDirectionStrategy;
 import ladder.step4.exception.NotParticipantException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +19,7 @@ public class LadderGameTest {
     private static final Participants participants = Participants.of("aa,bb,cc,dd");
     private static final LadderResults ladderResults = LadderResults.of("1,2,3,4", participants);
     private static final LadderHeight ladderHeight = LadderHeight.valueOf(3);
-    private static final Ladder ladder = Ladder.of(participants, ladderHeight, prev -> !prev);
+    private static final Ladder ladder = Ladder.of(participants, ladderHeight, ToggleDirectionStrategy.getInstance());
     private static final LadderGame ladderGame = LadderGame.of(
         LadderGameExecutor.execute(participants, ladderResults, ladder)
     );
@@ -27,7 +29,7 @@ public class LadderGameTest {
     @ValueSource(strings = {"1", "2", "3", "4"})
     void 참여자_검증_테스트(String target) {
         assertThatExceptionOfType(NotParticipantException.class)
-            .isThrownBy(() -> ladderGame.getResult(target));
+            .isThrownBy(() -> ladderGame.getResultOfString(target));
     }
 
 
