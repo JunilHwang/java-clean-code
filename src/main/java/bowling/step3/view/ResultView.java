@@ -9,6 +9,7 @@ import bowling.step3.domain.frame.Frame;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.joining;
@@ -20,18 +21,19 @@ public class ResultView {
     private static final String NUMBERS_FORMAT = "| NAME |%s|";
     private static final String SCORES_FORMAT = "| %4s |  %s|";
 
-    private ResultView() {
-    }
+    private ResultView() { }
 
     public static ResultView getInstance() {
         return INSTANCE;
     }
 
     public void printFrames(PlayerFrames playerFrames) {
+        String playerName = playerFrames.getPlayer().toString();
         System.out.printf(
-            "%s" + NEW_LINE + "%s" + NEW_LINE + NEW_LINE,
+            "%s" + NEW_LINE + "%s" + NEW_LINE + "%s" + NEW_LINE + NEW_LINE,
             frameNumbers(),
-            frameScores(playerFrames)
+            frameScores(playerFrames, playerName, frame -> String.format("%-4s", scoreOf(frame))),
+            frameScores(playerFrames, "", frame -> String.format("%-4s", calculationOf(frame)))
         );
     }
 
@@ -44,11 +46,11 @@ public class ResultView {
         );
     }
 
-    private String frameScores(PlayerFrames playerFrames) {
+    private String frameScores(PlayerFrames playerFrames, String label, Function<Frame, String> mapper) {
         return String.format(
-            SCORES_FORMAT, playerFrames.getPlayer(),
+            SCORES_FORMAT, label,
             playerFrames.getPreview()
-                        .map(frame -> String.format("%-4s", scoreOf(frame)))
+                        .map(mapper)
                         .collect(joining("|  ")));
     }
 
@@ -57,31 +59,24 @@ public class ResultView {
             return "";
         }
         return eachScoreOf(frame.getScores()
-                                .stream()
-                                .collect(toList()));
+            .stream()
+            .collect(toList()));
     }
 
     private String eachScoreOf(List<Score> scores) {
-        System.out.println(scores);
         return IntStream.range(0, scores.size())
-            .mapToObj(index -> scores.get(index) != null
-                                 ? toScoreType(scores, index)
-                                 : null)
-            .filter(Objects::nonNull)
-            .collect(joining("|"));
+                        .mapToObj(index -> scores.get(index) != null
+                                              ? ScoreType.toScoreTypeValue(scores, index)
+                                              : null)
+                        .filter(Objects::nonNull)
+                        .collect(joining("|"));
     }
 
-    private String toScoreType(List<Score> scores, int index) {
-        if (scores.get(index) == Score.valueOf(Score.MIN_SCORE)) {
-            return ScoreType.GUTTER.getValue();
+    private String calculationOf(Frame frame) {
+        if (frame == null) {
+            return "";
         }
-        if (scores.get(index) == Score.getStrike()) {
-            return ScoreType.STRIKE.getValue();
-        }
-        if (index == 1 && NormalScores.isSparedOf(scores)) {
-            return ScoreType.SPARED.getValue();
-        }
-        return scores.get(index).toString();
+        int calculatedScore = frame.calculateScore();
+        return calculatedScore == Frame.EMPTY_CALC ? "" : String.valueOf(calculatedScore);
     }
-
 }

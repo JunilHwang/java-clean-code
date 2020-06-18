@@ -5,7 +5,7 @@ import bowling.step3.domain.ScoreType;
 
 import java.util.stream.Stream;
 
-public class Scores {
+public abstract class Scores {
     protected final Score firstScore;
     protected final Score secondScore;
 
@@ -14,30 +14,31 @@ public class Scores {
         this.secondScore = secondScore;
     }
 
-    public Scores nextInit(Score score) {
-        return null;
-    }
-
     public boolean isType(ScoreType scoreType) {
         if (scoreType.equals(ScoreType.STRIKE)) {
             return firstScore == Score.getStrike();
         }
         if (scoreType.equals(ScoreType.SPARED)) {
-            return firstScore.sum(secondScore) == Score.getStrike();
+            return secondScore != null &&
+                   firstScore.sum(secondScore) == Score.getStrike();
         }
         return false;
-    }
-
-    public boolean isFullOf() {
-        return firstScore != null && secondScore != null;
     }
 
     public int totalScore() {
         return firstScore.sum(secondScore).getValue();
     }
 
-    public Stream<Score> stream() {
-        return Stream.of(firstScore, secondScore);
+    public boolean isFull() {
+        return isType(ScoreType.STRIKE) || (firstScore != null && secondScore != null);
     }
+
+    public boolean isEmpty() {
+        return firstScore == null && secondScore == null;
+    }
+
+    abstract public Scores nextInit(Score score);
+
+    abstract public Stream<Score> stream();
 
 }

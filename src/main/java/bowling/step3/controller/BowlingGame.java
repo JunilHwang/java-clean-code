@@ -19,13 +19,13 @@ public class BowlingGame {
 
     private void frameView(Frame frame) {
         Scores scores = frame.getScores();
-        frame.createNextFrame(scores.nextInit(inputView.inputScore(frame.getValue())));
+        frame.createNextFrameOfScores(scores.nextInit(inputView.inputScore(frame.getValue())));
         resultView.printFrames(playerFrames);
     }
 
     public void normalFrameView(Frame nowFrame) {
         frameView(nowFrame);
-        if (nowFrame.getScores().isType(ScoreType.STRIKE)) {
+        if (!nowFrame.getScores().isType(ScoreType.STRIKE)) {
             frameView(nowFrame);
         }
     }
@@ -41,7 +41,7 @@ public class BowlingGame {
 
     public static void main(String[] args) {
         Player player = inputView.inputName();
-        Frame temp = NormalFrame.of(1, NormalScores.init(), null);
+        Frame temp = NormalFrame.start();
         PlayerFrames playerFrames = PlayerFrames.of(player, temp);
 
         BowlingGame game = new BowlingGame(playerFrames);

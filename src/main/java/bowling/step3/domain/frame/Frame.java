@@ -1,8 +1,15 @@
 package bowling.step3.domain.frame;
 
+import bowling.step3.domain.ScoreType;
 import bowling.step3.domain.scores.Scores;
 
-public class Frame {
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+public abstract class Frame {
+    public static final int EMPTY_CALC = -1;
 
     protected final int frame;
     protected Scores scores;
@@ -20,9 +27,30 @@ public class Frame {
         return frame;
     }
 
-    public void createNextFrame (Scores scores) {}
-
-    public Frame getNextFrame () {
-        return null;
+    public int calculateScore() {
+        boolean isNotFull = scores == null || !scores.isFull();
+        boolean isStrike = !isNotFull && scores.isType(ScoreType.STRIKE);
+        boolean isSpared = !isNotFull && !isStrike && scores.isType(ScoreType.SPARED);
+        return Stream.of(calculatorOfEmpty(isNotFull, () -> EMPTY_CALC),
+                         calculatorOfEmpty(isStrike, this::calculateScoreOfStrike),
+                         calculatorOfEmpty(isSpared, this::calculateScoreOfSpared))
+              .filter(Objects::nonNull)
+              .findFirst()
+              .orElse(scores::totalScore)
+              .get();
     }
+
+    private Supplier<Integer> calculatorOfEmpty (boolean type, Supplier<Integer> calculator) {
+        return type ? calculator : null;
+    }
+
+    abstract protected int calculateScoreOfSpared();
+
+    abstract protected int calculateScoreOfStrike();
+
+    abstract protected int calculateScoreOfTwoStrike(int totalScore);
+
+    abstract public void createNextFrameOfScores(Scores scores);
+
+    abstract public Frame getNextFrame();
 }

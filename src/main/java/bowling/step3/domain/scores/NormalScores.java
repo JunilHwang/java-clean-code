@@ -4,6 +4,7 @@ import bowling.step3.domain.Score;
 import bowling.step3.domain.ScoreType;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class NormalScores extends Scores {
 
@@ -19,11 +20,14 @@ public class NormalScores extends Scores {
         return of(null, null);
     }
 
-    public static boolean isSparedOf(List<Score> scores) {
-        if (scores.get(0) == Score.getStrike()) {
-            return false;
-        }
-        return of(scores.get(0), scores.get(1)).isType(ScoreType.SPARED);
+    public static boolean isType(List<Score> scores, ScoreType scoreType) {
+        return !scores.get(0).isType(ScoreType.STRIKE) &&
+               of(scores.get(0), scores.get(1)).isType(scoreType);
+    }
+
+    @Override
+    public Stream<Score> stream() {
+        return Stream.of(firstScore, secondScore);
     }
 
     @Override

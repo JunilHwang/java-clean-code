@@ -12,16 +12,24 @@ public class FinalScores extends Scores {
         this.bonusScore = bonusScore;
     }
 
-    public static FinalScores of (Score firstScore, Score secondScore) {
-        return new FinalScores(firstScore, secondScore, null);
+    public static FinalScores of(Score firstScore, Score secondScore) {
+        return of(firstScore, secondScore, null);
     }
 
-    public static FinalScores init () {
+    public static FinalScores of(Score firstScore, Score secondScore, Score bonusScore) {
+        return new FinalScores(firstScore, secondScore, bonusScore);
+    }
+
+    public static FinalScores init() {
         return of(null, null);
     }
 
+    public boolean filledBonus() {
+        return bonusScore != null;
+    }
+
     @Override
-    public Scores nextInit (Score score) {
+    public Scores nextInit(Score score) {
         if (firstScore == null) {
             return of(score, null);
         }
@@ -29,21 +37,6 @@ public class FinalScores extends Scores {
             return of(firstScore, score);
         }
         return new FinalScores(firstScore, secondScore, score);
-    }
-
-    @Override
-    public boolean isFullOf() {
-        return firstScore != null && secondScore != null && bonusScore != null;
-    }
-
-    @Override
-    public int totalScore() {
-        return Stream.of(firstScore, secondScore, bonusScore)
-                     .reduce(
-                         Score.MIN_SCORE,
-                         (total, score) -> total + (score == null ? Score.MIN_SCORE : score.getValue()),
-                         Integer::sum
-                     );
     }
 
     @Override
