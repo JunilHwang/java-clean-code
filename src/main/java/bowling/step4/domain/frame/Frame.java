@@ -1,6 +1,6 @@
 package bowling.step4.domain.frame;
 
-import bowling.step4.domain.ScoreType;
+import bowling.step4.domain.ScoresType;
 import bowling.step4.domain.scores.Scores;
 
 import java.util.Objects;
@@ -27,16 +27,13 @@ public abstract class Frame {
     }
 
     public int calculateScore() {
-        boolean isNotFull = scores == null || !scores.isFull();
-        boolean isStrike = !isNotFull && scores.isType(ScoreType.STRIKE);
-        boolean isSpared = !isNotFull && !isStrike && scores.isType(ScoreType.SPARED);
-        return Stream.of(calculatorOfEmpty(isNotFull, () -> EMPTY_CALC),
-                         calculatorOfEmpty(isStrike, this::calculateScoreOfStrike),
-                         calculatorOfEmpty(isSpared, this::calculateScoreOfSpared))
-              .filter(Objects::nonNull)
-              .findFirst()
-              .orElse(scores::totalScore)
-              .get();
+        return Stream.of(calculatorOfEmpty(!ScoresType.FULL.of(scores), () -> EMPTY_CALC),
+                         calculatorOfEmpty(ScoresType.STRIKE.of(scores), this::calculateScoreOfStrike),
+                         calculatorOfEmpty(ScoresType.SPARED.of(scores), this::calculateScoreOfSpared))
+                     .filter(Objects::nonNull)
+                     .findFirst()
+                     .orElse(scores::totalScore)
+                     .get();
     }
 
     private Supplier<Integer> calculatorOfEmpty (boolean type, Supplier<Integer> calculator) {

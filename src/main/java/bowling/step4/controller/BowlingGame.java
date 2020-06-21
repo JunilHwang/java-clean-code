@@ -1,61 +1,62 @@
 package bowling.step4.controller;
 
-import bowling.step4.domain.Player;
-import bowling.step4.domain.PlayerFrames;
-import bowling.step4.domain.ScoreType;
-import bowling.step4.domain.frame.Frame;
+import bowling.step4.domain.*;
 import bowling.step4.domain.frame.NormalFrame;
 import bowling.step4.domain.scores.Scores;
 import bowling.step4.view.InputView;
 import bowling.step4.view.ResultView;
 
-import java.util.Optional;
+import static java.util.stream.Collectors.toList;
 
 public class BowlingGame {
     private static final InputView inputView = InputView.getInstance();
     private static final ResultView resultView = ResultView.getInstance();
 
-    private final PlayerFrames playerFrames;
+    private final PlayersFrames playersFrames;
 
-    public BowlingGame(PlayerFrames playerFrames) {
-        this.playerFrames = playerFrames;
+    public BowlingGame(PlayersFrames playersFrames) {
+        this.playersFrames = playersFrames;
     }
 
-    private void frameView(Frame frame) {
-        Scores scores = frame.getScores();
-        frame.createNextFrameOfScores(scores.nextInit(inputView.inputScore(frame.getValue())));
-        resultView.printFrames(playerFrames);
+    public void normalFrameView() {
+        playersFrames.stream()
+                     .map(PlayerFrameDTO::of)
+                     .peek(this::frameView)
+                     .filter(playerFrameDTO -> !ScoresType.STRIKE.of(playerFrameDTO.getFrameScores()))
+                     .collect(toList())
+                     .forEach(this::frameView);
     }
 
-    public void normalFrameView(Frame nowFrame) {
-        frameView(nowFrame);
-        if (!nowFrame.getScores().isType(ScoreType.STRIKE)) {
-            frameView(nowFrame);
-        }
+    public void finalFrameView() {
+        playersFrames.stream()
+                     .map(PlayerFrameDTO::of)
+                     .peek(this::frameView)
+                     .collect(toList()).stream()
+                     .peek(this::frameView)
+                     .filter(playerFrameDTO -> ScoresType.BONUS.of(playerFrameDTO.getFrameScores()))
+                     .forEach(this::frameView);
     }
 
-    public void finalFrameView(Frame frame) {
-        frameView(frame);
-        frameView(frame);
-        Scores scores = frame.getScores();
-        if (scores.isType(ScoreType.STRIKE) || scores.isType(ScoreType.SPARED)) {
-            frameView(frame);
-        }
+    private void frameView(PlayerFrameDTO playerFrameDTO) {
+        Scores scores = playerFrameDTO.getFrameScores();
+        Score nextScore = inputView.inputScore(playerFrameDTO.playerName());
+        playerFrameDTO.getFrame()
+                   .createNextFrameOfScores(scores.nextInit(nextScore));
+        resultView.printFrames(playersFrames);
     }
+
 
     public static void main(String[] args) {
-        Player player = inputView.inputName();
-        Frame temp = NormalFrame.start();
-        PlayerFrames playerFrames = PlayerFrames.of(player, temp);
+        PlayersFrames playersFrames = PlayerCount
+                                        .of(inputView.inputPlayerCount())
+                                        .ofPlayersFrames(i -> PlayerFrames.of(inputView.inputName(i), NormalFrame.start()));
 
-        BowlingGame game = new BowlingGame(playerFrames);
+        BowlingGame game = new BowlingGame(playersFrames);
+        resultView.printFrames(playersFrames);
 
-        resultView.printFrames(playerFrames);
-        while (temp instanceof NormalFrame) {
-            game.normalFrameView(temp);
-            temp = Optional.ofNullable(temp.getNextFrame())
-                           .orElse(temp);
+        while (!playersFrames.isLast()) {
+            game.normalFrameView();
         }
-        game.finalFrameView(temp);
+        game.finalFrameView();
     }
 }

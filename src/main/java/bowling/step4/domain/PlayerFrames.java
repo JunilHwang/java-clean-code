@@ -1,7 +1,6 @@
 package bowling.step4.domain;
 
 import bowling.step4.domain.frame.Frame;
-
 import java.util.stream.Stream;
 
 public class PlayerFrames {
@@ -21,7 +20,11 @@ public class PlayerFrames {
         return Frames.preview(firstFrame);
     }
 
-    public Player getPlayer() {
-        return player;
+    public String getPlayerName() {
+        return player.toString();
+    }
+
+    public Frame getLastFrame() {
+        return Frames.getLastFrameOf(firstFrame);
     }
 }

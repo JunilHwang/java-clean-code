@@ -11,13 +11,18 @@ public class InputView {
 
     private InputView() { }
 
-    public Player inputName() {
-        System.out.print("플레이어 이름은(3 english letters)?: ");
+    public int inputPlayerCount() {
+        System.out.print("How many people? ");
+        return Integer.parseInt(SCANNER.nextLine());
+    }
+
+    public Player inputName(int index) {
+        System.out.printf("플레이어 %d의 이름은(3 english letters)?: ", index);
         return Player.valueOf(SCANNER.nextLine());
     }
 
-    public Score inputScore(int frame) {
-        System.out.printf("%d프레임 투구 : ", frame);
+    public Score inputScore(String playerName) {
+        System.out.printf("%s's turn : ", playerName);
         return Score.stringOf(SCANNER.nextLine());
     }
 

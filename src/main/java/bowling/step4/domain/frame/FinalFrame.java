@@ -1,5 +1,6 @@
 package bowling.step4.domain.frame;
 
+import bowling.step4.domain.Frames;
 import bowling.step4.domain.Score;
 import bowling.step4.domain.scores.FinalScores;
 import bowling.step4.domain.scores.Scores;
@@ -16,6 +17,10 @@ public class FinalFrame extends Frame {
 
     public static Frame of(int frame, Scores scores) {
         return new FinalFrame(frame, scores);
+    }
+
+    public static Frame init() {
+        return of(Frames.LAST_FRAME, FinalScores.init());
     }
 
     public void createNextFrameOfScores(Scores scores) {
