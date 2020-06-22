@@ -1,6 +1,5 @@
 package me.cleancode.bowling.step3.controller;
 
-import bowling.step3.view.*;
 import me.cleancode.bowling.step3.domain.Player;
 import me.cleancode.bowling.step3.domain.PlayerFrames;
 import me.cleancode.bowling.step3.domain.ScoreType;

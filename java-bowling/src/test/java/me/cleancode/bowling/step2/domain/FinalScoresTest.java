@@ -181,7 +181,7 @@ public class FinalScoresTest {
                            .nextInit(Score.valueOf(0))
                            .nextInit(Score.valueOf(7))
                            .nextInit(Score.valueOf(7)),
-                14
+                7
             ),
             Arguments.of(
                 FinalScores.init()
