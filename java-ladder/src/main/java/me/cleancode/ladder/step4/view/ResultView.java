@@ -1,6 +1,5 @@
 package me.cleancode.ladder.step4.view;
 
-import ladder.step4.domain.*;
 import me.cleancode.ladder.step4.domain.*;
 
 import static java.util.stream.Collectors.joining;

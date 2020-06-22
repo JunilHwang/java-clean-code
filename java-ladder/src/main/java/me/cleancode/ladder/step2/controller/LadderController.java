@@ -4,7 +4,6 @@ import me.cleancode.ladder.step2.domain.Ladder;
 import me.cleancode.ladder.step2.domain.LadderHeight;
 import me.cleancode.ladder.step2.domain.Participants;
 import me.cleancode.ladder.step2.domain.strategy.LadderLineStrategyImpl;
-import ladder.step2.view.*;
 import me.cleancode.ladder.step2.view.InputView;
 import me.cleancode.ladder.step2.view.ResultView;
 

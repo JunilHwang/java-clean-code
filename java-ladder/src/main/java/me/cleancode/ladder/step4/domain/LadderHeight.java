@@ -1,6 +1,5 @@
 package me.cleancode.ladder.step4.domain;
 
-import ladder.step4.exception.*;
 import me.cleancode.ladder.step4.exception.LadderHeightMinimumSizeException;
 import me.cleancode.ladder.step4.exception.LadderHeightNonNumberException;
 

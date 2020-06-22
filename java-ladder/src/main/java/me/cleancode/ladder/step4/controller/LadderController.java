@@ -1,8 +1,5 @@
 package me.cleancode.ladder.step4.controller;
 
-import ladder.step4.domain.*;
-import ladder.step4.domain.strategy.*;
-import ladder.step4.view.*;
 import me.cleancode.ladder.step4.domain.*;
 import me.cleancode.ladder.step4.domain.strategy.LadderDirectionStrategy;
 import me.cleancode.ladder.step4.view.InputView;
