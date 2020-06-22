@@ -1,7 +1,5 @@
 package me.cleancode.racingcar.step2;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class StringCalculator {
 
   private String expression;
@@ -33,7 +31,8 @@ public class StringCalculator {
   }
 
   private void blankValidation (String expression) {
-    if (StringUtils.isBlank(expression))
+    if (expression == null || "".equals(expression.trim())) {
       throw new IllegalArgumentException(CalculatorError.ARGS_EMPTY);
+    }
   }
 }
