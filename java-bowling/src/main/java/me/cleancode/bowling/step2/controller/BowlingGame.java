@@ -4,7 +4,6 @@ import me.cleancode.bowling.step2.domain.frame.Frame;
 import me.cleancode.bowling.step2.domain.frame.NormalFrame;
 import me.cleancode.bowling.step2.domain.scores.NormalScores;
 import me.cleancode.bowling.step2.domain.scores.Scores;
-import bowling.step2.view.*;
 import me.cleancode.bowling.step2.domain.Player;
 import me.cleancode.bowling.step2.domain.PlayerFrames;
 import me.cleancode.bowling.step2.domain.Score;
