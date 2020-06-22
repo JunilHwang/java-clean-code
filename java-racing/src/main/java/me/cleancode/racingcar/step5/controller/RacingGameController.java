@@ -4,8 +4,6 @@ import me.cleancode.racingcar.step5.domain.*;
 import me.cleancode.racingcar.step5.view.InputView;
 import me.cleancode.racingcar.step5.view.ResultView;
 import me.cleancode.racingcar.step5.Exception.WinnerException;
-import racingcar.step5.domain.*;
-import racingcar.step5.view.*;
 
 import java.util.function.Consumer;
 import java.util.stream.Stream;

@@ -2,7 +2,6 @@ package me.cleancode.racingcar.step4;
 
 import me.cleancode.racingcar.step4.view.InputView;
 import me.cleancode.racingcar.step4.view.ResultView;
-import racingcar.step4.view.*;
 
 /**
  * 초간단 자동차 경주 게임을 구현한다.
