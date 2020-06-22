@@ -1,6 +1,5 @@
 package me.cleancode.ladder.step3.domain;
 
-import ladder.step3.domain.strategy.*;
 import me.cleancode.ladder.step3.domain.strategy.LadderLineStrategy;
 import me.cleancode.ladder.step3.domain.strategy.LadderLineStrategyImpl;
 import org.junit.jupiter.api.DisplayName;

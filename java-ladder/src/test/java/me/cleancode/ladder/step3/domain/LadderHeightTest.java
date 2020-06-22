@@ -1,6 +1,5 @@
 package me.cleancode.ladder.step3.domain;
 
-import ladder.step3.exception.*;
 import me.cleancode.ladder.step3.exception.LadderHeightMinimumSizeException;
 import me.cleancode.ladder.step3.exception.LadderHeightNonNumberException;
 import org.junit.jupiter.api.DisplayName;

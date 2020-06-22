@@ -1,6 +1,5 @@
 package me.cleancode.ladder.step4.domain;
 
-import ladder.step4.domain.strategy.*;
 import me.cleancode.ladder.step4.domain.strategy.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
