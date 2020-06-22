@@ -1,6 +1,5 @@
 package me.cleancode.lotto.step2.controller;
 
-import lotto.step2.domain.*;
 import me.cleancode.lotto.step2.domain.*;
 import me.cleancode.lotto.step2.view.InputView;
 import me.cleancode.lotto.step2.view.ResultView;
