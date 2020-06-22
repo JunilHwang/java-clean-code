@@ -10,27 +10,27 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+subprojects {
+    group 'me.java-clean-code'
+    version = '1.0.0'
 
-version = '1.0.0'
-sourceCompatibility = 1.8
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-repositories {
-    mavenCentral()
-}
+    sourceCompatibility = 1.8
 
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.hibernate:hibernate-java8')
-    runtime('com.h2database:h2')
-    testCompile('org.junit.jupiter:junit-jupiter:5.6.0')
-    testCompile('org.assertj:assertj-core:3.15.0')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-}
+    repositories {
+        mavenCentral()
+    }
 
-test {
-    useJUnitPlatform()
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.hibernate:hibernate-java8')
+        runtime('com.h2database:h2')
+        testCompile('org.junit.jupiter:junit-jupiter:5.6.0')
+        testCompile('org.assertj:assertj-core:3.15.0')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
 }
