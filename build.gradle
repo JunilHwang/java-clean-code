@@ -11,7 +11,7 @@ buildscript {
 }
 
 subprojects {
-    group 'me.java-clean-code'
+    group 'me.cleancode'
     version = '1.0.0'
 
     apply plugin: 'java'
