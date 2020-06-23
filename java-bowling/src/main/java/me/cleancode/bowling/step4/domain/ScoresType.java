@@ -10,14 +10,14 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 public enum ScoresType {
+    EMPTY(scores -> scores.get(0) == null && scores.get(1) == null),
     STRIKE(scores -> scores.get(0) == Score.getStrike()),
+    FULL(scores -> scores.get(0) == Score.getStrike() ||
+                   (scores.get(0) != null && scores.get(1) != null)),
     SPARED(scores -> !asList(null, Score.getStrike()).contains(scores.get(0))
                      && scores.get(1) != null
                      && scores.get(0).sum(scores.get(1)) == Score.getStrike()),
-    BONUS(scores -> ScoresType.SPARED.of(scores) || ScoresType.STRIKE.of(scores)),
-    EMPTY(scores -> scores.get(0) == null && scores.get(1) == null),
-    FULL(scores -> scores.get(0) == Score.getStrike() ||
-                   (scores.get(0) != null && scores.get(1) != null));
+    BONUS(scores -> SPARED.of(scores) || STRIKE.of(scores));
 
     private final Function<List<Score>, Boolean> isType;
 

@@ -18,14 +18,14 @@ public enum ScoreType {
     }
 
     public static String toScoreTypeValue(List<Score> scores, int index) {
-        if (scores.get(index).isType(ScoreType.GUTTER)) {
-            return ScoreType.GUTTER.getValue();
+        if (scores.get(index).isType(GUTTER)) {
+            return GUTTER.getValue();
         }
-        if (scores.get(index).isType(ScoreType.STRIKE)) {
-            return ScoreType.STRIKE.getValue();
+        if (scores.get(index).isType(STRIKE)) {
+            return STRIKE.getValue();
         }
         if (index == 1 && ScoresType.SPARED.of(scores)) {
-            return ScoreType.SPARED.getValue();
+            return SPARED.getValue();
         }
         return scores.get(index).toString();
     }
