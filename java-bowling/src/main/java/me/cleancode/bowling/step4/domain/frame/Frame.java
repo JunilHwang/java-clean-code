@@ -27,16 +27,16 @@ public abstract class Frame {
     }
 
     public int calculateScore() {
-        return Stream.of(calculatorOfEmpty(!ScoresType.FULL.of(scores), () -> EMPTY_CALC),
-                         calculatorOfEmpty(ScoresType.STRIKE.of(scores), this::calculateScoreOfStrike),
-                         calculatorOfEmpty(ScoresType.SPARED.of(scores), this::calculateScoreOfSpared))
+        return Stream.of(calculatorOf(!ScoresType.FULL.of(scores), () -> EMPTY_CALC),
+                         calculatorOf(ScoresType.STRIKE.of(scores), this::calculateScoreOfStrike),
+                         calculatorOf(ScoresType.SPARED.of(scores), this::calculateScoreOfSpared))
                      .filter(Objects::nonNull)
                      .findFirst()
                      .orElse(scores::totalScore)
                      .get();
     }
 
-    private Supplier<Integer> calculatorOfEmpty (boolean type, Supplier<Integer> calculator) {
+    private Supplier<Integer> calculatorOf (boolean type, Supplier<Integer> calculator) {
         return type ? calculator : null;
     }
 
