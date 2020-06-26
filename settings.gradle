@@ -1,3 +1,3 @@
 rootProject.name = 'java-clean-code'
 
-include 'java-racing', 'java-lotto', 'java-ladder', 'java-bowling'
+include 'java-racingcar', 'java-lotto', 'java-ladder', 'java-bowling'
