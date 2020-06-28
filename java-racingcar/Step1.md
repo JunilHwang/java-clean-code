@@ -1,5 +1,7 @@
 # Step1 - 학습 테스트 실습
 
+[./src/test/java/me/cleancode/racingcar/step1](./src/test/java/me/cleancode/racingcar/step1)
+
 ## String Class에 대한 학습 테스트
 
 ### 요구사항 1
