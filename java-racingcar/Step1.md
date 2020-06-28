@@ -23,3 +23,13 @@
     - `assertThatIllegalStateException()`
     - `assertThatIOException()`
     - `assertThatNullPointerException()`
+
+## 코드리뷰
+
+https://github.com/next-step/java-racingcar/pull/716
+
+```diff
++assertEquals(expected, numbers.contains(n));
+-assertThat(numbers.contains(n)).isEqualTo(expected);
+```
+
