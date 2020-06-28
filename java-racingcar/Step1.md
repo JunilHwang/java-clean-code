@@ -28,8 +28,40 @@
 
 https://github.com/next-step/java-racingcar/pull/716
 
+- `assertEquals`와 `assertThat`은 서로 대체할 수 있다.
 ```diff
 +assertEquals(expected, numbers.contains(n));
 -assertThat(numbers.contains(n)).isEqualTo(expected);
 ```
 
+- 테스트 코드를 작성할 때 `@DisplayName`을 통해 테스트의 의도를 명확히 드러낼 것
+```diff
++  @DisplayName("문자열에서 숫자 분리 테스트")
+  @Test
+  void 요구사항_01 () {
+    String[] result = "1,2".split(",");
+    assertThat(result).contains("1", "2");
+  }
+```
+
+- 명시한 것들에 대한 테스트 코드만 작성할 것
+
+```diff
+  @DisplayName("String.charAt(n) 에서 n이 String의 범위를 벗어나는 경우 StringIndexOutOfBoundsException 발생")
+  @Test
+  void 요구사항_03 () {
+    String input = "abc";
+-    assertThat(input.charAt(0)).isEqualTo('a'); // 이 부분은 분리하던가 제거하는것이 좋음
+-    assertThat(input.charAt(1)).isEqualTo('b'); // 이 부분은 분리하던가 제거하는것이 좋음
+-    assertThat(input.charAt(2)).isEqualTo('c'); // 이 부분은 분리하던가 제거하는것이 좋음
+
+    assertThatThrownBy(() -> {
+      input.charAt(3);
+    }).isInstanceOf(StringIndexOutOfBoundsException.class);
+
+    assertThatThrownBy(() -> {
+      input.charAt(-1);
+    }).isInstanceOf(StringIndexOutOfBoundsException.class);
+  }
+}
+```
