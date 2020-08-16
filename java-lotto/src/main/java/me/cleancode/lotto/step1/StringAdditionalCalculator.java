@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 public class StringAdditionalCalculator {
     private static final Pattern pattern = Pattern.compile("//(.)\n(.*)");
+    private static final String DELIMITER_STRING = ",|:";
     private static final int EXPRESSION = 2;
     private static final int DELIMITER = 1;
 
@@ -24,7 +25,9 @@ public class StringAdditionalCalculator {
 
     static String[] getNumbers(String text) {
         Matcher m = pattern.matcher(text);
-        return m.find() ? m.group(EXPRESSION).split(m.group(DELIMITER)) : text.split(",|:");
+        return m.find()
+            ? m.group(EXPRESSION).split(m.group(DELIMITER))
+            : text.split(DELIMITER_STRING);
     }
 
     static int parseNumber(String text) {
